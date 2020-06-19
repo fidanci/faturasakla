@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "838212364835",
+    "firebase_url": "https://faturasakla-e164c.firebaseio.com",
+    "project_id": "faturasakla-e164c",
+    "storage_bucket": "faturasakla-e164c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838212364835:android:93dc1db64d967f6fa91f96",
+        "android_client_info": {
+          "package_name": "com.fidansoft.faturasakla"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838212364835-4evcopegl82cumnf7ng3331hbr18onl2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-NFPt2cd3gsjMGaswpKVfEj1kM7SctMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838212364835-4evcopegl82cumnf7ng3331hbr18onl2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
