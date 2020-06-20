@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class AddScreen extends StatefulWidget {
   final User currentUser;
 
-  const AddScreen({Key key, this.currentUser}) : super(key: key);
+  const AddScreen({Key key, @required this.currentUser}) : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }

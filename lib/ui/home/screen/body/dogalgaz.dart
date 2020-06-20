@@ -1,7 +1,7 @@
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
 import 'package:faturasakla/core/Model/makbuz.dart';
-import 'package:faturasakla/ui/AddScreen/Screen/add_screen.dart';
 import 'package:faturasakla/ui/DetailScreen/detail_secreen.dart';
+import 'package:faturasakla/ui/widget/ortak_floatactionbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -93,20 +93,9 @@ class _DogalGazPageState extends State<DogalGazPage> {
           }
         },
       ),
-      floatingActionButton: _floatActionButton,
+      floatingActionButton: OrtakFloatActionButton(),
     );
   }
-
-  Widget get _floatActionButton => FloatingActionButton.extended(
-        label: Text('Makbuz Ekle'),
-        onPressed: () {
-          Navigator.of(context, rootNavigator: true).push(
-            MaterialPageRoute(
-              builder: (context) => AddScreen(),
-            ),
-          );
-        },
-      );
 
   Future<Null> _makbuzYenile() async {
     setState(() {});
