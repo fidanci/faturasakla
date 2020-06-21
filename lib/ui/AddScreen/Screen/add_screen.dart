@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
-import 'package:faturasakla/core/Model/User.dart';
 import 'package:faturasakla/ui/FotografGoruntule/fotograf_goruntule_file.dart';
 import 'package:faturasakla/ui/widget/platform_duyarli_alert_dialog.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddScreen extends StatefulWidget {
-  final User currentUser;
-
-  const AddScreen({Key key, @required this.currentUser}) : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }
@@ -112,70 +108,86 @@ class _AddScreenState extends State<AddScreen> {
     if (_image != null) {
       if (dropdownValue == 'Elektrik') {
         var sonuc = await _userModel.savetheelectricalreceipt(
-            widget.currentUser, _image);
+            _userModel.user, _image);
         print(dropdownValue);
         if (sonuc == true) {
+          Navigator.of(context).pop();
           PlatformDuyarliAlertDialog(
             baslik: 'Başarılı',
             icerik: 'Makbuz kaydedildi...',
             anaButonYazisi: 'Tamam',
           ).goster(context);
+          _image = null;
         } else {
+          Navigator.of(context).pop();
           PlatformDuyarliAlertDialog(
             baslik: 'HATA',
             icerik: 'Sunucuyla ilgili hata oluştu lütfen tekrar deneyiniz...',
             anaButonYazisi: 'Tamam',
           ).goster(context);
+          _image = null;
         }
       } else if (dropdownValue == 'Su') {
-        var sonuc = await _userModel.savethewater(widget.currentUser, _image);
+        var sonuc = await _userModel.savethewater(_userModel.user, _image);
         print(dropdownValue);
         if (sonuc == true) {
+          Navigator.of(context).pop();
           PlatformDuyarliAlertDialog(
             baslik: 'Başarılı',
             icerik: 'Makbuz kaydedildi...',
             anaButonYazisi: 'Tamam',
           ).goster(context);
+          _image = null;
         } else {
+          Navigator.of(context).pop();
           PlatformDuyarliAlertDialog(
             baslik: 'HATA',
             icerik: 'Sunucuyla ilgili hata oluştu lütfen tekrar deneyiniz...',
             anaButonYazisi: 'Tamam',
           ).goster(context);
+          _image = null;
         }
       } else if (dropdownValue == 'Doğalgaz') {
         var sonuc =
-            await _userModel.savethenaturelgas(widget.currentUser, _image);
+            await _userModel.savethenaturelgas(_userModel.user, _image);
         print(dropdownValue);
         if (sonuc == true) {
+          Navigator.of(context).pop();
           PlatformDuyarliAlertDialog(
             baslik: 'Başarılı',
             icerik: 'Makbuz kaydedildi...',
             anaButonYazisi: 'Tamam',
           ).goster(context);
+          _image = null;
         } else {
+          Navigator.of(context).pop();
           PlatformDuyarliAlertDialog(
             baslik: 'HATA',
             icerik: 'Sunucuyla ilgili hata oluştu lütfen tekrar deneyiniz...',
             anaButonYazisi: 'Tamam',
           ).goster(context);
+          _image = null;
         }
       } else if (dropdownValue == 'İnternet') {
         var sonuc =
-            await _userModel.savetheinternet(widget.currentUser, _image);
+            await _userModel.savetheinternet(_userModel.user, _image);
         print(dropdownValue);
         if (sonuc == true) {
+          Navigator.of(context).pop();
           PlatformDuyarliAlertDialog(
             baslik: 'Başarılı',
             icerik: 'Makbuz kaydedildi...',
             anaButonYazisi: 'Tamam',
           ).goster(context);
+          _image = null;
         } else {
+          Navigator.of(context).pop();
           PlatformDuyarliAlertDialog(
             baslik: 'HATA',
             icerik: 'Sunucuyla ilgili hata oluştu lütfen tekrar deneyiniz...',
             anaButonYazisi: 'Tamam',
           ).goster(context);
+          _image = null;
         }
       }
     }

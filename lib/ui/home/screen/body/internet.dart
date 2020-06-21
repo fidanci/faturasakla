@@ -94,6 +94,7 @@ class _InternetPageState extends State<InternetPage> {
         },
       ),
       floatingActionButton: OrtakFloatActionButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
     );
   }
 

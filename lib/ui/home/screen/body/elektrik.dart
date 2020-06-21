@@ -93,7 +93,9 @@ class _ElektrikPageState extends State<ElektrikPage> {
           }
         },
       ),
+      extendBody: true,
       floatingActionButton: OrtakFloatActionButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
     );
   }
 

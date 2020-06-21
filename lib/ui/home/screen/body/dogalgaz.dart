@@ -94,6 +94,7 @@ class _DogalGazPageState extends State<DogalGazPage> {
         },
       ),
       floatingActionButton: OrtakFloatActionButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
     );
   }
 

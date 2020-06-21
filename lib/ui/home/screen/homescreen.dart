@@ -34,30 +34,31 @@ class _HomePageState extends State<HomePage> {
       TabItem.Su: SuPage(),
       TabItem.DogalGaz: DogalGazPage(),
       TabItem.Internet: InternetPage(),
-      
     };
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async =>
-          !await navigatorKeys[_currentTab].currentState.maybePop(),
-      child: MyCustomBottomNavigation(
-        currentTab: _currentTab,
-        sayfaOlusturucu: tumSayfalar(),
-        navigatorKeys: navigatorKeys,
-        onSelectedTab: (secilenTab) {
-          if (secilenTab == _currentTab) {
-            navigatorKeys[secilenTab]
-                .currentState
-                .popUntil((route) => route.isFirst);
-          } else {
-            setState(() {
-              _currentTab = secilenTab;
-            });
-          }
-        },
+    return Scaffold(
+      body: WillPopScope(
+        onWillPop: () async =>
+            !await navigatorKeys[_currentTab].currentState.maybePop(),
+        child: MyCustomBottomNavigation(
+          currentTab: _currentTab,
+          sayfaOlusturucu: tumSayfalar(),
+          navigatorKeys: navigatorKeys,
+          onSelectedTab: (secilenTab) {
+            if (secilenTab == _currentTab) {
+              navigatorKeys[secilenTab]
+                  .currentState
+                  .popUntil((route) => route.isFirst);
+            } else {
+              setState(() {
+                _currentTab = secilenTab;
+              });
+            }
+          },
+        ),
       ),
     );
   }

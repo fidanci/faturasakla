@@ -94,6 +94,7 @@ class _SuPageState extends State<SuPage> {
         },
       ),
       floatingActionButton: OrtakFloatActionButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
     );
   }
 
