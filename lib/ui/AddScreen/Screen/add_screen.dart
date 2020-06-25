@@ -1,20 +1,31 @@
 import 'dart:io';
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
+import 'package:faturasakla/core/Model/User.dart';
 import 'package:faturasakla/ui/FotografGoruntule/fotograf_goruntule_file.dart';
 import 'package:faturasakla/ui/widget/platform_duyarli_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:provider/provider.dart';
 
 class AddScreen extends StatefulWidget {
+  final User userID;
+
+  const AddScreen({Key key, @required this.userID}) : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }
 
 class _AddScreenState extends State<AddScreen> {
   File _image;
-  final picker = ImagePicker();
+  var imagePicker = ImagePicker();
   String dropdownValue = 'Elektrik';
+  @override
+  void initState() {
+    super.initState();
+    //   getImage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,14 +53,19 @@ class _AddScreenState extends State<AddScreen> {
                         );
                       }
                     },
-                    child: Image(
-                      image: _image == null
-                          ? getImage()
-                          : FileImage(File(_image.path)),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 1 / 3,
-                      fit: BoxFit.fill,
-                    ),
+                    child: _image == null
+                        ? GestureDetector(
+                            child: Text('Lütfen bir makbuz fotoğrafı çekin '),
+                            onTap: () {
+                              print("kamera'dan fotoğraf çekiliyor");
+                              getImage();
+                            },
+                          )
+                        : Image.file(
+                            _image,
+                            height: MediaQuery.of(context).size.height * 1 / 3,
+                            width: MediaQuery.of(context).size.width,
+                          ),
                   ),
                 ),
                 DropdownButton<String>(
@@ -67,7 +83,7 @@ class _AddScreenState extends State<AddScreen> {
                       dropdownValue = newValue;
                     });
                   },
-                  items: <String>['Elektrik', 'Su', 'Doğalgaz', 'İnternet']
+                  items: <String>['Doğalgaz', 'Elektrik', 'İnternet', 'Su']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -86,7 +102,7 @@ class _AddScreenState extends State<AddScreen> {
                     style: TextStyle(color: Colors.white),
                   ),
                   color: Colors.blue,
-                  onPressed: () => makbuzKaydet(),
+                  onPressed: () => makbuzKaydet(context),
                 ),
               ],
             ),
@@ -97,18 +113,19 @@ class _AddScreenState extends State<AddScreen> {
   }
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await imagePicker.getImage(source: ImageSource.camera);
+
     setState(() {
       _image = File(pickedFile.path);
     });
   }
 
-  void makbuzKaydet() async {
+  void makbuzKaydet(BuildContext context) async {
     UserModel _userModel = Provider.of<UserModel>(context, listen: false);
     if (_image != null) {
       if (dropdownValue == 'Elektrik') {
-        var sonuc = await _userModel.savetheelectricalreceipt(
-            _userModel.user, _image);
+        var sonuc =
+            await _userModel.savetheelectricalreceipt(widget.userID, _image);
         print(dropdownValue);
         if (sonuc == true) {
           Navigator.of(context).pop();
@@ -117,7 +134,6 @@ class _AddScreenState extends State<AddScreen> {
             icerik: 'Makbuz kaydedildi...',
             anaButonYazisi: 'Tamam',
           ).goster(context);
-          _image = null;
         } else {
           Navigator.of(context).pop();
           PlatformDuyarliAlertDialog(
@@ -128,7 +144,7 @@ class _AddScreenState extends State<AddScreen> {
           _image = null;
         }
       } else if (dropdownValue == 'Su') {
-        var sonuc = await _userModel.savethewater(_userModel.user, _image);
+        var sonuc = await _userModel.savethewater(widget.userID, _image);
         print(dropdownValue);
         if (sonuc == true) {
           Navigator.of(context).pop();
@@ -148,8 +164,7 @@ class _AddScreenState extends State<AddScreen> {
           _image = null;
         }
       } else if (dropdownValue == 'Doğalgaz') {
-        var sonuc =
-            await _userModel.savethenaturelgas(_userModel.user, _image);
+        var sonuc = await _userModel.savethenaturelgas(widget.userID, _image);
         print(dropdownValue);
         if (sonuc == true) {
           Navigator.of(context).pop();
@@ -169,8 +184,7 @@ class _AddScreenState extends State<AddScreen> {
           _image = null;
         }
       } else if (dropdownValue == 'İnternet') {
-        var sonuc =
-            await _userModel.savetheinternet(_userModel.user, _image);
+        var sonuc = await _userModel.savetheinternet(widget.userID, _image);
         print(dropdownValue);
         if (sonuc == true) {
           Navigator.of(context).pop();

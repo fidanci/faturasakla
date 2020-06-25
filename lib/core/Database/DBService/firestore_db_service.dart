@@ -58,7 +58,7 @@ class FirestoreDBService implements DBBase {
       'baslik': baslik,
       'photoURL': url,
     });
-
+ 
     return true;
   }
 
@@ -76,6 +76,7 @@ class FirestoreDBService implements DBBase {
       Makbuz _makbuz = Makbuz.fromMap(snapshot.data);
       tumMakbuzlar.add(_makbuz);
     }
+
     return tumMakbuzlar;
   }
 
@@ -119,6 +120,7 @@ class FirestoreDBService implements DBBase {
       Makbuz _makbuz = Makbuz.fromMap(snapshot.data);
       tumMakbuzlar.add(_makbuz);
     }
+
     return tumMakbuzlar;
   }
 
@@ -144,7 +146,7 @@ class FirestoreDBService implements DBBase {
       'baslik': baslik,
       'photoURL': url,
     });
-
+ 
     return true;
   }
 
@@ -162,6 +164,7 @@ class FirestoreDBService implements DBBase {
       Makbuz _makbuz = Makbuz.fromMap(snapshot.data);
       tumMakbuzlar.add(_makbuz);
     }
+
     return tumMakbuzlar;
   }
 
@@ -205,6 +208,7 @@ class FirestoreDBService implements DBBase {
       Makbuz _makbuz = Makbuz.fromMap(snapshot.data);
       tumMakbuzlar.add(_makbuz);
     }
+
     return tumMakbuzlar;
   }
 }

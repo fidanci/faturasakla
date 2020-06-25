@@ -1,4 +1,4 @@
-import 'package:faturasakla/ui/AddScreen/Screen/add_screen.dart';
+/* import 'package:faturasakla/ui/AddScreen/Screen/add_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -19,3 +19,4 @@ class OrtakFloatActionButton extends StatelessWidget {
     );
   }
 }
+ */

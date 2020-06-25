@@ -1,7 +1,7 @@
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
 import 'package:faturasakla/core/Model/makbuz.dart';
+import 'package:faturasakla/ui/AddScreen/Screen/add_screen.dart';
 import 'package:faturasakla/ui/DetailScreen/detail_secreen.dart';
-import 'package:faturasakla/ui/widget/ortak_floatactionbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,14 +13,14 @@ class ElektrikPage extends StatefulWidget {
 class _ElektrikPageState extends State<ElektrikPage> {
   @override
   Widget build(BuildContext context) {
-    UserModel _userModel = Provider.of<UserModel>(context);
-    var kullanici = _userModel.user;
+    UserModel userModel = Provider.of<UserModel>(context);
+    var kullanici = userModel.user;
     return Scaffold(
       appBar: AppBar(
         title: Text('Elektrik Makbuzlarım'),
       ),
       body: FutureBuilder<List<Makbuz>>(
-        future: _userModel.readtheelectricalreceipt(kullanici.uid),
+        future: userModel.readtheelectricalreceipt(kullanici.uid),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -94,10 +94,26 @@ class _ElektrikPageState extends State<ElektrikPage> {
         },
       ),
       extendBody: true,
-      floatingActionButton: OrtakFloatActionButton(),
+      floatingActionButton: _floatActionButton,
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
     );
   }
+
+  Widget get _floatActionButton => FloatingActionButton(
+        child: Icon(Icons.note_add),
+        mini: true,
+        elevation: 5,
+        onPressed: () {
+          UserModel _userModel = Provider.of<UserModel>(context, listen: false);
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(
+              builder: (context) => AddScreen(
+                userID: _userModel.user,
+              ),
+            ),
+          );
+        },
+      );
 
   Future<Null> _makbuzYenile() async {
     setState(() {});
