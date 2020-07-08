@@ -16,18 +16,18 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final _formKey = GlobalKey<FormState>();
-  String _email, _password;
-  String _butonText, _linkText, _appbarText;
-  var _formType = FormType.Register;
+  final formKey = GlobalKey<FormState>();
+  String email, password;
+  String butonText, linkText, appbarText;
+  var formType = FormType.Register;
 
   @override
   Widget build(BuildContext context) {
-    _butonText = _formType == FormType.LogIn ? "Giriş yap" : "Kayıt ol";
-    _linkText = _formType == FormType.LogIn
+    butonText = formType == FormType.LogIn ? "Giriş yap" : "Kayıt ol";
+    linkText = formType == FormType.LogIn
         ? "Bir hesabınız yok mu? Kayıt olun."
         : "Bir hesabınız var mı? Giriş yapın.";
-    _appbarText = _formType == FormType.LogIn ? "Giriş yap" : "Kayıt ol";
+    appbarText = formType == FormType.LogIn ? "Giriş yap" : "Kayıt ol";
 
     final _userModel = Provider.of<UserModel>(context);
 
@@ -40,14 +40,14 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(_appbarText),
+        title: Text(appbarText),
       ),
       body: _userModel.state == ViewState.Idle
           ? SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: Container(
                     alignment: FractionalOffset.center,
                     child: Column(
@@ -66,7 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             border: OutlineInputBorder(),
                           ),
                           onSaved: (String savedEmail) {
-                            _email = savedEmail;
+                            email = savedEmail;
                           },
                         ),
                         SizedBox(height: 8),
@@ -82,20 +82,20 @@ class _SignInScreenState extends State<SignInScreen> {
                             border: OutlineInputBorder(),
                           ),
                           onSaved: (String savedPassword) {
-                            _password = savedPassword;
+                            password = savedPassword;
                           },
                         ),
                         SizedBox(height: 8),
                         SignInButtonBuilder(
                           width: MediaQuery.of(context).size.width * 2 / 3,
                           icon: Icons.email,
-                          text: _butonText,
+                          text: butonText,
                           backgroundColor: Colors.blue,
                           onPressed: () => _formSubmit(context),
                         ),
                         SizedBox(height: 8),
                         FlatButton(
-                          child: Text(_linkText),
+                          child: Text(linkText),
                           onPressed: () => _change(),
                         ),
                       ],
@@ -109,13 +109,13 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _formSubmit(BuildContext context) async {
-    _formKey.currentState.save();
-    print("email {$_email} , pass {$_password} ");
+    formKey.currentState.save();
+    print("email {$email} , pass {$password} ");
     final _userModel = Provider.of<UserModel>(context, listen: false);
-    if (_formType == FormType.LogIn) {
+    if (formType == FormType.LogIn) {
       try {
         User _signInUser =
-            await _userModel.signInWithEmailAndPasswords(_email, _password);
+            await _userModel.signInWithEmailAndPasswords(email, password);
         if (_signInUser != null) {
           print("SignIn User ${_signInUser.uid.toString()}");
         }
@@ -130,7 +130,7 @@ class _SignInScreenState extends State<SignInScreen> {
     } else {
       try {
         User _signUpUser =
-            await _userModel.createUserWithEmailAndPasswords(_email, _password);
+            await _userModel.createUserWithEmailAndPasswords(email, password);
         if (_signUpUser != null) {
           print("SignIn User ${_signUpUser.uid.toString()}");
         }
@@ -146,8 +146,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _change() {
     setState(() {
-      _formType =
-          _formType == FormType.LogIn ? FormType.Register : FormType.LogIn;
+      formType =
+          formType == FormType.LogIn ? FormType.Register : FormType.LogIn;
     });
   }
 }

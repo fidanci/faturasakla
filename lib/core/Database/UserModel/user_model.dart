@@ -110,36 +110,21 @@ class UserModel with ChangeNotifier implements AuthBase {
     return sonuc;
   }
 
-  Future<bool> savetheelectricalreceipt(User user, File yuklenecekDosya) async {
-    return await _authRepository.savetheelectricalreceipt(
-        user, yuklenecekDosya);
+  Future<String> uploadFile(
+      User user, File yuklenecekDosya, String kategori) async {
+    return await _authRepository.uploadFile(user, yuklenecekDosya, kategori);
   }
 
-  Future<List<Makbuz>> readtheelectricalreceipt(String userID) async {
-    return await _authRepository.readtheelectricalreceipt(userID);
+  Future<bool> makbuzKaydet(
+      Makbuz makbuz, String userID, String koleksiyon) async {
+    return await _authRepository.makbuzKaydet(makbuz, userID, koleksiyon);
   }
 
-  Future<bool> savethewater(User user, File yuklenecekDosya) async {
-    return _authRepository.savethewater(user, yuklenecekDosya);
+  Future<List<Makbuz>> makbuzOku(String userID, String kategori) async {
+    return await _authRepository.makbuzOku(userID, kategori);
   }
 
-  Future<List<Makbuz>> readthewater(String userID) async {
-    return await _authRepository.readthewater(userID);
-  }
-
-  Future<bool> savethenaturelgas(User user, File yuklenecekDosya) async {
-    return _authRepository.savethenaturelgas(user, yuklenecekDosya);
-  }
-
-  Future<List<Makbuz>> readthenaturelgas(String userID) async {
-    return await _authRepository.readthenaturelgas(userID);
-  }
-
-  Future<bool> savetheinternet(User user, File yuklenecekDosya) async {
-    return _authRepository.savetheinternet(user, yuklenecekDosya);
-  }
-
-  Future<List<Makbuz>> readtheinternet(String userID) async {
-    return await _authRepository.readtheinternet(userID);
+  Future<String> makbuzID(String userID, String kategori) async {
+    return await _authRepository.makbuzID(userID, kategori);
   }
 }

@@ -5,11 +5,11 @@ class Makbuz {
   final DateTime baslik;
   final String photoURL;
 
-  Makbuz(
+  Makbuz({
     this.user,
     this.baslik,
     this.photoURL,
-  );
+  });
 
   Map<String, dynamic> toMap() {
     return {

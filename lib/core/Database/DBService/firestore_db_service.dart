@@ -1,16 +1,11 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:faturasakla/core/Database/DBService/DBBase.dart';
 import 'package:faturasakla/core/Model/User.dart';
 import 'package:faturasakla/core/Model/makbuz.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 
-class FirestoreDBService implements DBBase {
+class FirestoreDBService with ChangeNotifier {
   Firestore _firebaseDB = Firestore.instance;
-  FirebaseStorage _firebaseStorage = FirebaseStorage();
-  StorageReference _storageReference;
 
-  @override
   Future<bool> saveUser(User user) async {
     await _firebaseDB
         .collection('User')
@@ -26,7 +21,6 @@ class FirestoreDBService implements DBBase {
     return true;
   }
 
-  @override
   Future<User> readUser(String userID) async {
     DocumentSnapshot _okunanUser =
         await _firebaseDB.collection('User').document(userID).get();
@@ -36,36 +30,23 @@ class FirestoreDBService implements DBBase {
     return _okunanUserNesnesi;
   }
 
-  @override
-  Future<bool> savetheelectricalreceipt(User user, File yuklenecekDosya) async {
-    Timestamp baslik = Timestamp.now();
-    var _makbuzId = _firebaseDB.collection("Elektrik").document().documentID;
-    _storageReference = _firebaseStorage
-        .ref()
-        .child('Elektrik')
-        .child(user.uid)
-        .child(baslik.toDate().toString() + ".png");
-    var uploadTask = _storageReference.putFile(yuklenecekDosya);
-    var url = await (await uploadTask.onComplete).ref.getDownloadURL();
-
+  Future<bool> makbuzKaydet(
+      Makbuz makbuz, String userID, String koleksiyon) async {
+    var _makbuzId = _firebaseDB.collection(koleksiyon).document().documentID;
+    var _kaydedilecekMakbuz = makbuz.toMap();
     await _firebaseDB
-        .collection('Elektrik')
-        .document(user.uid)
+        .collection(koleksiyon)
+        .document(userID)
         .collection('makbuz')
         .document(_makbuzId)
-        .setData({
-      'user': user.uid,
-      'baslik': baslik,
-      'photoURL': url,
-    });
- 
+        .setData(_kaydedilecekMakbuz);
+    notifyListeners();
     return true;
   }
 
-  @override
-  Future<List<Makbuz>> readtheelectricalreceipt(String userID) async {
+  Future<List<Makbuz>> makbuzOku(String userID, String kategori) async {
     QuerySnapshot querySnapshot = await _firebaseDB
-        .collection('Elektrik')
+        .collection(kategori)
         .document(userID)
         .collection('makbuz')
         .where('user', isEqualTo: userID)
@@ -76,139 +57,18 @@ class FirestoreDBService implements DBBase {
       Makbuz _makbuz = Makbuz.fromMap(snapshot.data);
       tumMakbuzlar.add(_makbuz);
     }
-
+    notifyListeners();
     return tumMakbuzlar;
   }
 
-  @override
-  Future<bool> savethewater(User user, File yuklenecekDosya) async {
-    Timestamp baslik = Timestamp.now();
-    var _makbuzId = _firebaseDB.collection("Su").document().documentID;
-    _storageReference = _firebaseStorage
-        .ref()
-        .child('Su')
-        .child(user.uid)
-        .child(baslik.toDate().toString() + ".png");
-    var uploadTask = _storageReference.putFile(yuklenecekDosya);
-    var url = await (await uploadTask.onComplete).ref.getDownloadURL();
-
-    await _firebaseDB
-        .collection('Su')
-        .document(user.uid)
-        .collection('makbuz')
-        .document(_makbuzId)
-        .setData({
-      'user': user.uid,
-      'baslik': baslik,
-      'photoURL': url,
-    });
-
-    return true;
-  }
-
-  @override
-  Future<List<Makbuz>> readthewater(String userID) async {
-    QuerySnapshot querySnapshot = await _firebaseDB
-        .collection('Su')
+  Future<String> makbuzID(String userID, String kategori) async {
+    var querySnapshot = _firebaseDB
+        .collection(kategori)
         .document(userID)
         .collection('makbuz')
-        .where('user', isEqualTo: userID)
-        .orderBy('baslik', descending: true)
-        .getDocuments();
-    List<Makbuz> tumMakbuzlar = [];
-    for (DocumentSnapshot snapshot in querySnapshot.documents) {
-      Makbuz _makbuz = Makbuz.fromMap(snapshot.data);
-      tumMakbuzlar.add(_makbuz);
-    }
+        .document()
+        .documentID;
 
-    return tumMakbuzlar;
-  }
-
-  @override
-  Future<bool> savethenaturelgas(User user, File yuklenecekDosya) async {
-    Timestamp baslik = Timestamp.now();
-    var _makbuzId = _firebaseDB.collection("DogalGaz").document().documentID;
-    _storageReference = _firebaseStorage
-        .ref()
-        .child('DogalGaz')
-        .child(user.uid)
-        .child(baslik.toDate().toString() + ".png");
-    var uploadTask = _storageReference.putFile(yuklenecekDosya);
-    var url = await (await uploadTask.onComplete).ref.getDownloadURL();
-
-    await _firebaseDB
-        .collection('DogalGaz')
-        .document(user.uid)
-        .collection('makbuz')
-        .document(_makbuzId)
-        .setData({
-      'user': user.uid,
-      'baslik': baslik,
-      'photoURL': url,
-    });
- 
-    return true;
-  }
-
-  @override
-  Future<List<Makbuz>> readthenaturelgas(String userID) async {
-    QuerySnapshot querySnapshot = await _firebaseDB
-        .collection('DogalGaz')
-        .document(userID)
-        .collection('makbuz')
-        .where('user', isEqualTo: userID)
-        .orderBy('baslik', descending: true)
-        .getDocuments();
-    List<Makbuz> tumMakbuzlar = [];
-    for (DocumentSnapshot snapshot in querySnapshot.documents) {
-      Makbuz _makbuz = Makbuz.fromMap(snapshot.data);
-      tumMakbuzlar.add(_makbuz);
-    }
-
-    return tumMakbuzlar;
-  }
-
-  @override
-  Future<bool> savetheinternet(User user, File yuklenecekDosya) async {
-    Timestamp baslik = Timestamp.now();
-    var _makbuzId = _firebaseDB.collection("Internet").document().documentID;
-    _storageReference = _firebaseStorage
-        .ref()
-        .child('Internet')
-        .child(user.uid)
-        .child(baslik.toDate().toString() + ".png");
-    var uploadTask = _storageReference.putFile(yuklenecekDosya);
-    var url = await (await uploadTask.onComplete).ref.getDownloadURL();
-
-    await _firebaseDB
-        .collection('Internet')
-        .document(user.uid)
-        .collection('makbuz')
-        .document(_makbuzId)
-        .setData({
-      'user': user.uid,
-      'baslik': baslik,
-      'photoURL': url,
-    });
-
-    return true;
-  }
-
-  @override
-  Future<List<Makbuz>> readtheinternet(String userID) async {
-    QuerySnapshot querySnapshot = await _firebaseDB
-        .collection('Internet')
-        .document(userID)
-        .collection('makbuz')
-        .where('user', isEqualTo: userID)
-        .orderBy('baslik', descending: true)
-        .getDocuments();
-    List<Makbuz> tumMakbuzlar = [];
-    for (DocumentSnapshot snapshot in querySnapshot.documents) {
-      Makbuz _makbuz = Makbuz.fromMap(snapshot.data);
-      tumMakbuzlar.add(_makbuz);
-    }
-
-    return tumMakbuzlar;
+    return querySnapshot;
   }
 }

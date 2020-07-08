@@ -1,12 +1,14 @@
-import 'package:faturasakla/core/Database/DBService/firestore_db_Service.dart';
+import 'package:faturasakla/core/Database/Auth/firebase_auth_service.dart';
+import 'package:faturasakla/core/Database/DBService/firabse_storage_db_service.dart';
+import 'package:faturasakla/core/Database/DBService/firestore_db_service.dart';
 import 'package:faturasakla/core/Database/Repository/auth_repository.dart';
 import 'package:get_it/get_it.dart';
-import 'core/Database/Auth/firebase_auth_service.dart';
 
-GetIt locator = GetIt.instance();
+final locator = GetIt.instance();
 
-void setupLocator() {
-  locator.registerLazySingleton(() => FirebaseAuthService());
-  locator.registerLazySingleton(() => FirestoreDBService());
-  locator.registerLazySingleton(() => AuthRepository());
+void setpu(){
+locator.registerLazySingleton(() => FirebaseAuthService());
+locator.registerLazySingleton(() => FirestoreDBService());
+locator.registerLazySingleton(() => AuthRepository());
+locator.registerLazySingleton(() => FirebaseStorageService());
 }

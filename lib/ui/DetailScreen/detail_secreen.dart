@@ -67,7 +67,8 @@ class _DetailScreenState extends State<DetailScreen> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => FotografGoruntuleNetwork(photoURL: _photoURL),
+                        builder: (context) =>
+                            FotografGoruntuleNetwork(photoURL: _photoURL),
                       ),
                     );
                   },

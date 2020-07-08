@@ -13,7 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => UserModel(),
-      child: MaterialApp(
+      child: child,
+    );
+  }
+
+  Widget get child => MaterialApp(
         title: 'Fatura Sakla',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -21,7 +25,5 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: LandingPage(),
-      ),
-    );
-  }
+      );
 }

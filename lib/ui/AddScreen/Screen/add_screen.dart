@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
 import 'package:faturasakla/core/Model/User.dart';
+import 'package:faturasakla/core/Model/makbuz.dart';
 import 'package:faturasakla/ui/FotografGoruntule/fotograf_goruntule_file.dart';
 import 'package:faturasakla/ui/widget/platform_duyarli_alert_dialog.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddScreen extends StatefulWidget {
-  final User userID;
+  final User user;
 
-  const AddScreen({Key key, @required this.userID}) : super(key: key);
+  const AddScreen({Key key, @required this.user}) : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }
@@ -19,11 +21,12 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   File _image;
   var imagePicker = ImagePicker();
+  Timestamp baslik = Timestamp.now();
   String dropdownValue = 'Elektrik';
+
   @override
   void initState() {
     super.initState();
-    //   getImage();
   }
 
   @override
@@ -122,87 +125,32 @@ class _AddScreenState extends State<AddScreen> {
 
   void makbuzKaydet(BuildContext context) async {
     UserModel _userModel = Provider.of<UserModel>(context, listen: false);
+    var _photoURL =
+        await _userModel.uploadFile(widget.user, _image, dropdownValue);
+    Makbuz makbuz = Makbuz(
+        baslik: baslik.toDate(),
+        photoURL: _photoURL.toString(),
+        user: widget.user.uid);
     if (_image != null) {
-      if (dropdownValue == 'Elektrik') {
-        var sonuc =
-            await _userModel.savetheelectricalreceipt(widget.userID, _image);
-        print(dropdownValue);
-        if (sonuc == true) {
-          Navigator.of(context).pop();
-          PlatformDuyarliAlertDialog(
-            baslik: 'Başarılı',
-            icerik: 'Makbuz kaydedildi...',
-            anaButonYazisi: 'Tamam',
-          ).goster(context);
-        } else {
-          Navigator.of(context).pop();
-          PlatformDuyarliAlertDialog(
-            baslik: 'HATA',
-            icerik: 'Sunucuyla ilgili hata oluştu lütfen tekrar deneyiniz...',
-            anaButonYazisi: 'Tamam',
-          ).goster(context);
-          _image = null;
-        }
-      } else if (dropdownValue == 'Su') {
-        var sonuc = await _userModel.savethewater(widget.userID, _image);
-        print(dropdownValue);
-        if (sonuc == true) {
-          Navigator.of(context).pop();
-          PlatformDuyarliAlertDialog(
-            baslik: 'Başarılı',
-            icerik: 'Makbuz kaydedildi...',
-            anaButonYazisi: 'Tamam',
-          ).goster(context);
-          _image = null;
-        } else {
-          Navigator.of(context).pop();
-          PlatformDuyarliAlertDialog(
-            baslik: 'HATA',
-            icerik: 'Sunucuyla ilgili hata oluştu lütfen tekrar deneyiniz...',
-            anaButonYazisi: 'Tamam',
-          ).goster(context);
-          _image = null;
-        }
-      } else if (dropdownValue == 'Doğalgaz') {
-        var sonuc = await _userModel.savethenaturelgas(widget.userID, _image);
-        print(dropdownValue);
-        if (sonuc == true) {
-          Navigator.of(context).pop();
-          PlatformDuyarliAlertDialog(
-            baslik: 'Başarılı',
-            icerik: 'Makbuz kaydedildi...',
-            anaButonYazisi: 'Tamam',
-          ).goster(context);
-          _image = null;
-        } else {
-          Navigator.of(context).pop();
-          PlatformDuyarliAlertDialog(
-            baslik: 'HATA',
-            icerik: 'Sunucuyla ilgili hata oluştu lütfen tekrar deneyiniz...',
-            anaButonYazisi: 'Tamam',
-          ).goster(context);
-          _image = null;
-        }
-      } else if (dropdownValue == 'İnternet') {
-        var sonuc = await _userModel.savetheinternet(widget.userID, _image);
-        print(dropdownValue);
-        if (sonuc == true) {
-          Navigator.of(context).pop();
-          PlatformDuyarliAlertDialog(
-            baslik: 'Başarılı',
-            icerik: 'Makbuz kaydedildi...',
-            anaButonYazisi: 'Tamam',
-          ).goster(context);
-          _image = null;
-        } else {
-          Navigator.of(context).pop();
-          PlatformDuyarliAlertDialog(
-            baslik: 'HATA',
-            icerik: 'Sunucuyla ilgili hata oluştu lütfen tekrar deneyiniz...',
-            anaButonYazisi: 'Tamam',
-          ).goster(context);
-          _image = null;
-        }
+      var sonuc =
+          await _userModel.makbuzKaydet(makbuz, widget.user.uid, dropdownValue);
+      if (sonuc == true) {
+        print("$dropdownValue makbuzu kaydedildi");
+        Navigator.of(context).pop();
+        PlatformDuyarliAlertDialog(
+          baslik: "Başarılı",
+          icerik: "Makbuzunuz kaydediledi!",
+          anaButonYazisi: "Tamam",
+        ).goster(context);
+      } else {
+        print("$dropdownValue makbuzunda hata");
+        Navigator.of(context).pop();
+        PlatformDuyarliAlertDialog(
+          baslik: "Hata",
+          icerik:
+              "Sunucu kaynaklı bir hatadan ötürü makbuz yükelenemedi' Lütfen tekrar deneyiniz!",
+          anaButonYazisi: "Tamam",
+        ).goster(context);
       }
     }
   }
