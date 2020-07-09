@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
-  //setupLocator();
 }
 
 class MyApp extends StatelessWidget {

@@ -1,4 +1,3 @@
-import 'package:faturasakla/core/Model/User.dart';
 import 'package:faturasakla/ui/home/screen/BotomNavigationBar/my_bottom_navi.dart';
 import 'package:faturasakla/ui/home/screen/BotomNavigationBar/tab_items.dart';
 import 'package:faturasakla/ui/home/screen/body/dogalgaz.dart';
@@ -8,12 +7,6 @@ import 'package:faturasakla/ui/home/screen/body/su.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  final User user;
-  HomePage({
-    Key key,
-    @required this.user,
-  }) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }

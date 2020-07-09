@@ -1,6 +1,7 @@
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
 import 'package:faturasakla/core/Model/makbuz.dart';
 import 'package:faturasakla/ui/DetailScreen/detail_secreen.dart';
+import 'package:faturasakla/ui/widget/ortak_floatactionbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,9 @@ class _OkumaPageState extends State<OkumaPage> {
     var kullanici = userModel.user;
     var _kategori = widget.kategori;
     return Scaffold(
+      appBar: AppBar(
+        title: Text("$_kategori Makbuzlarım"),
+      ),
       body: FutureBuilder<List<Makbuz>>(
         future: userModel.makbuzOku(kullanici.uid, _kategori),
         builder: (context, snapshot) {
@@ -93,6 +97,8 @@ class _OkumaPageState extends State<OkumaPage> {
           }
         },
       ),
+      floatingActionButton: OrtakFloatActionButton(kategori: _kategori),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 
