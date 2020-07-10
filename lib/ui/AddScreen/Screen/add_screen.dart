@@ -1,13 +1,13 @@
 import 'dart:io';
+import 'package:achievement_view/achievement_view.dart';
+import 'package:achievement_view/achievement_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
 import 'package:faturasakla/core/Model/User.dart';
 import 'package:faturasakla/core/Model/makbuz.dart';
 import 'package:faturasakla/ui/FotografGoruntule/fotograf_goruntule_file.dart';
-import 'package:faturasakla/ui/widget/platform_duyarli_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:provider/provider.dart';
 
 class AddScreen extends StatefulWidget {
@@ -137,21 +137,50 @@ class _AddScreenState extends State<AddScreen> {
       if (sonuc == true) {
         print("$dropdownValue makbuzu kaydedildi");
         Navigator.of(context).pop();
-        PlatformDuyarliAlertDialog(
-          baslik: "Başarılı",
-          icerik: "Makbuzunuz kaydediledi!",
-          anaButonYazisi: "Tamam",
-        ).goster(context);
+        showAchievementView(
+          context,
+          "Makbuzunuz Kaydedildi",
+          baslik.toDate().toString().substring(0, 16),
+          Image.file(_image),
+          Colors.blue,
+        );
       } else {
         print("$dropdownValue makbuzunda hata");
         Navigator.of(context).pop();
-        PlatformDuyarliAlertDialog(
-          baslik: "Hata",
-          icerik:
-              "Sunucu kaynaklı bir hatadan ötürü makbuz yükelenemedi' Lütfen tekrar deneyiniz!",
-          anaButonYazisi: "Tamam",
-        ).goster(context);
+        showAchievementView(
+          context,
+          "Hata",
+          "Sunucu kaynaklı bir hatadan ötürü makbuz yükelenemedi' Lütfen tekrar deneyiniz!",
+          Icon(Icons.close),
+          Colors.red,
+        );
       }
     }
+  }
+
+  void showAchievementView(BuildContext context, String title, String subTitle,
+      Widget icon, Color color) {
+    AchievementView(
+      context,
+      title: title,
+      subTitle: subTitle,
+      //onTab: _onTabAchievement,
+      icon: icon,
+      typeAnimationContent: AnimationTypeAchievement.fadeSlideToUp,
+      borderRadius: 5.0,
+      color: color,
+      textStyleTitle: TextStyle(),
+      textStyleSubTitle: TextStyle(),
+      alignment: Alignment.topCenter,
+      duration: Duration(seconds: 3),
+      //isCircle: false,
+      listener: (status) {
+        print(status);
+        //AchievementState.opening
+        //AchievementState.open
+        //AchievementState.closing
+        //AchievementState.closed
+      },
+    )..show();
   }
 }
