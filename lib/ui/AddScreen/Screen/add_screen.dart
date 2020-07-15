@@ -116,6 +116,13 @@ class _AddScreenState extends State<AddScreen> {
   }
 
   Future getImage() async {
+    showAchievementView(
+      context,
+      "Kamera Açılıyor",
+      "",
+      Icon(Icons.camera_alt),
+      Colors.blueGrey,
+    );
     final pickedFile = await imagePicker.getImage(source: ImageSource.camera);
 
     setState(() {
