@@ -1,7 +1,5 @@
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
 import 'package:faturasakla/core/Model/User.dart';
-import 'package:faturasakla/core/error.dart';
-import 'package:faturasakla/ui/widget/platform_duyarli_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:faturasakla/ui/utilities/constants.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +16,6 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
-  bool loading = false;
   String email, password, error;
 
   Widget _emailTF() {
@@ -172,11 +169,7 @@ class _RegisterState extends State<Register> {
       email = "";
       password = "";
     } on PlatformException catch (e) {
-      PlatformDuyarliAlertDialog(
-        baslik: 'Kullanıcı Oluşturmada Hata oluştu!!',
-        icerik: Hatalar.goster(e.code),
-        anaButonYazisi: 'Tamam',
-      ).goster(context);
+      print(e.toString());
       email = "";
       password = "";
     }

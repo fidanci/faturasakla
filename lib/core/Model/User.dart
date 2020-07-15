@@ -10,7 +10,10 @@ class User {
   });
 
   Map<String, dynamic> toMap() {
-    return {'uid': uid, 'email': email};
+    return {
+      'uid': uid,
+      'email': email,
+    };
   }
 
   User.fromMap(Map<String, dynamic> map)

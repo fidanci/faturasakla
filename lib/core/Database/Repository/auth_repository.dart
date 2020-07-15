@@ -38,15 +38,11 @@ class AuthRepository implements AuthBase {
   @override
   Future<User> createUserWithEmailAndPasswords(
       String email, String password) async {
-    if (appMode == AppMode.RELEASE) {
-      User _user = await _firebaseAuthService.createUserWithEmailAndPasswords(
-          email, password);
-      bool _sonuc = await _firestoreDBService.saveUser(_user);
-      if (_sonuc) {
-        return await _firestoreDBService.readUser(_user.uid);
-      } else {
-        return null;
-      }
+    User _user = await _firebaseAuthService.createUserWithEmailAndPasswords(
+        email, password);
+    bool _sonuc = await _firestoreDBService.saveUser(_user);
+    if (_sonuc) {
+      return await _firestoreDBService.readUser(_user.uid);
     } else {
       return null;
     }

@@ -1,5 +1,5 @@
+import 'package:faturasakla/connect_control.dart';
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
-import 'package:faturasakla/landingpage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +23,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: LandingPage(),
+        home: ConnectControl(),
       );
 }

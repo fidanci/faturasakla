@@ -38,6 +38,7 @@ dependencies:
   image_picker: ^0.6.7+2
   achievement_view: ^0.2.0
   connectivity: ^0.4.9
+  flutter_offline: ^0.3.0
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,5 @@
 import 'package:faturasakla/core/Database/UserModel/user_model.dart';
 import 'package:faturasakla/core/Model/User.dart';
-import 'package:faturasakla/core/error.dart';
-import 'package:faturasakla/ui/widget/platform_duyarli_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:faturasakla/ui/utilities/constants.dart';
 import 'package:flutter/services.dart';
@@ -19,8 +17,6 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   String email, password, error;
-
-  bool loading = false;
 
   Widget _emailTF() {
     return Column(
@@ -174,11 +170,6 @@ class _SignInState extends State<SignIn> {
       password = "";
     } on PlatformException catch (e) {
       print('widget login hata yakalandı ' + e.code.toString());
-      PlatformDuyarliAlertDialog(
-        baslik: 'Oturum Açmada Hata oluştu!!',
-        icerik: Hatalar.goster(e.code),
-        anaButonYazisi: 'Tamam',
-      ).goster(context);
       email = "";
       password = "";
     }
